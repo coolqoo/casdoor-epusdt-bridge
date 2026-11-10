@@ -1,0 +1,2 @@
+BRIDGE_ORIGIN=https://bridge.example.com
+MERCHANTS_JSON={"example":{"gcClientId":"example","gcSecret":"REPLACE_WITH_INDEPENDENT_GC_SECRET","casdoorOrigin":"https://auth.example.com","organization":"example","gmpayOrigin":"https://pay.example.com","gmpayPid":"1000","gmpaySecret":"REPLACE_WITH_GMPAY_SECRET","currency":"USD","returnOrigins":["https://app.example.com"]}}

@@ -1,0 +1,8 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "casdoor-epusdt-bridge",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-29",
+  "workers_dev": true,
+  "vars": { "BRIDGE_ORIGIN": "https://bridge.example.com" }
+}

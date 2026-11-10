@@ -1,0 +1,22 @@
+{
+  "name": "casdoor-epusdt-bridge",
+  "version": "0.1.0",
+  "description": "Stateless Casdoor GC to Epusdt GMPay bridge for Cloudflare Workers",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "dev": "wrangler dev",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test test/*.test.ts",
+    "deploy": "npm run typecheck && npm test && wrangler deploy"
+  },
+  "dependencies": { "@noble/hashes": "2.4.0" },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20261029.1",
+    "@types/node": "24.5.2",
+    "typescript": "5.9.2",
+    "wrangler": "4.155.0"
+  }
+}
