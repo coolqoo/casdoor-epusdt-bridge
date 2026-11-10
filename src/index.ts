@@ -83,7 +83,11 @@ async function notify(request:Request,key:string,payment:string,amountString:str
   }catch{throw new Failure(502,'PAYMENT_UNCONFIRMED','Gateway did not confirm this payment');}
   const time=new Date().toISOString().replace(/\D/g,'').slice(0,14);
   const envelope:Omit<GcEnvelope,'sign'>={op:'OrderNotify',xmpch:m.gcClientId,version:'1.4',requesttime:time,data:encodeData({xmpch:m.gcClientId,orderdate:time,orderno:payment,amount:amount/100,jylsh:input.trade_id,tradeno:input.trade_id,paymethod:'GMPay',orderstate:'1',return_type:'1',payerid:'',payername:''})};
-  const delivered=await fetchUpstream(notifyTarget(m,payment),{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({...envelope,sign:gcSign(envelope,m.gcSecret)})});
+  // Casdoor attributes anonymous audit events from the explicit organization
+  // query. Use only the configured organization so its scoped webhook sees
+  // this payment without subscribing to other organizations' records.
+  const target=new URL(notifyTarget(m,payment));target.searchParams.set('organization',m.organization);
+  const delivered=await fetchUpstream(target,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({...envelope,sign:gcSign(envelope,m.gcSecret)})});
   if(delivered.status!==200||(await delivered.text()).trim()!=='success')throw new Failure(502,'CASDOOR_NOT_ACKNOWLEDGED','Casdoor did not acknowledge payment; gateway must retry');
   return new Response('ok');
 }

@@ -59,7 +59,7 @@ test('only acknowledges GMPay after Casdoor acknowledges the signed GC notificat
   let acknowledged=false,forwards=0;
   globalThis.fetch=async(input,options)=>{
     if(String(input).includes('/pay/checkout-counter-resp/'))return Response.json({status_code:200,data:{status:2,amount:12.99,currency:'USD'}});
-    assert.equal(String(input),`https://auth.example.com/api/notify-payment/example/${payment}`);
+    assert.equal(String(input),`https://auth.example.com/api/notify-payment/example/${payment}?organization=example`);
     const form=Object.fromEntries(new URLSearchParams(String(options?.body))) as unknown as Parameters<typeof gcSign>[0]&{sign:string};
     assert.equal(form.sign,gcSign(form,merchant.gcSecret));
     assert.equal(decodeData(form.data).orderno,payment);assert.equal(decodeData(form.data).amount,12.99);assert.equal(decodeData(form.data).orderstate,'1');
